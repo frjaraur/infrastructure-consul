@@ -8,13 +8,15 @@ DATADIR="${DATADIR:=/data}"
 
 SERVER="${SERVER:=false}"
 
-[ ! -n "${CLIENTIP}" ] && CLIENTIP=${ADVERTISEIP}
+[ ! -n "${CLIENTIP}" ] && CLIENTIP="-client ${ADVERTISEIP}"
 
 [ -n "${ADVERTISEIP}" ] && ADVERTISEIP="-advertise ${ADVERTISEIP}"
 
 [ -n "${DATACENTER}" ] && DATACENTER="-dc ${DATACENTER}"
 
 [ -n "${NAME}" ] && NAME="-node ${NAME}"
+
+[ -n "${DNSSERVER}" ] && DNSSERVER="-recursor=${DNSSERVER}"
 
 
 GetFirstIP(){
@@ -27,7 +29,7 @@ StartConsulAsServer(){
 	[ ! -f ${DATADIR} ] && mkdir -p ${DATADIR}
 	SERVER="-server -bootstrap "
 	CMD="/apps/consul agent ${ADVERTISEIP} ${NAME} ${SERVER} ${DATACENTER}\
-	-data-dir=${DATADIR} -client ${CLIENTIP} -recursor=${DNSSERVER}"
+	-data-dir=${DATADIR} ${CLIENTIP} ${DNSSERVER}"
 
 
 	echo "CMD: ${CMD}"
