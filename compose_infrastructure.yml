@@ -1,0 +1,28 @@
+version '2'
+services:
+    consul-server:
+        image: infra-consul
+        container_name: consul-NODE_NAME
+        ports:
+            - 8300:8300
+            - 8301:8301
+            - 8301:8301/udp
+            - 8302:8302
+            - 8302:8302/udp
+            - 8400:8400
+            - 8500:8500
+            - 53:53/udp
+        environment:
+        - "SERVER=true"
+        - "ADVERTISEIP=NODE_IP"
+        - "constraint:node==NODE_NAME"
+        command: start
+        networks:
+            default:
+                aliases:
+                    - consul-NODE_NAME
+        restart: always
+networks:
+    default:
+        external:
+            name: infrastructure
