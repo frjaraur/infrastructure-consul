@@ -8,8 +8,12 @@ DATADIR="${DATADIR:=/data}"
 
 SERVER="${SERVER:=false}"
 
+CLIENTIP="${CLIENTIP:=0.0.0.0}"
 
-[ -n "${ADVERTISEIP}" ] && CLIENTIP="-client ${ADVERTISEIP}" && ADVERTISEIP="-advertise ${ADVERTISEIP}" 
+
+CLIENTIP="-client ${CLIENTIP}" 
+
+[ -n "${ADVERTISEIP}" ] && ADVERTISEIP="-advertise ${ADVERTISEIP}" 
 
 [ -n "${DATACENTER}" ] && DATACENTER="-dc ${DATACENTER}"
 
