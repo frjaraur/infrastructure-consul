@@ -26,7 +26,7 @@ StartConsulAsServer(){
 	[ ! -f ${DATADIR} ] && mkdir -p ${DATADIR}
 	SERVER="-server -bootstrap "
 	CMD="/apps/consul agent ${ADVERTISEIP} ${NAME} ${SERVER} ${DATACENTER}\
-	-data-dir=${DATADIR} -client $firstip -recursor=${DNSSERVER}"
+	-data-dir=${DATADIR} -client ${ADVERTISEIP} -recursor=${DNSSERVER}"
 
 
 	echo "CMD: ${CMD}"

@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -sS http://10.0.100.11:8500/v1/catalog/services| python -mjson.tool
