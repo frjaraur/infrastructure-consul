@@ -71,7 +71,7 @@ StartConsulAsAgent(){
 case $ACTION in
 	start|START)
 		[ "$SERVER" = "true" ] && StartConsulAsServer && exit 0
-
+		StartConsulAsAgent && exit 0
 	;;
 
 	*)
