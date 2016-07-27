@@ -21,8 +21,19 @@ CLIENTIP="-client ${CLIENTIP}"
 
 [ -n "${DNSSERVER}" ] && DNSSERVER="-recursor=${DNSSERVER}"
 
-[ -n "${MASTERIP}" ] && JOIN="-retry-join ${MASTERIP}"
-
+if [ -n "${MASTERIP}" ]
+then
+	if [ $(echo ${MASTERIP}|grep -c ",") -ne 0 ]
+	then
+		MASTERIPS="$(echo ${MASTERIP}|sed -e "s/,/ /g")"
+		for IP in ${MASTERIPS}
+		do
+			TMPJOIN="-retry-join ${MASTERIP} ${TMPJOIN}"
+		done
+	else
+		JOIN="-retry-join ${MASTERIP}"
+	fi
+fi
 
 GetFirstIP(){
 	firstip="$(ip add show eth0 |awk '/inet / { print $2 }'|cut -d "/" -f1)"
