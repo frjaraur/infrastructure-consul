@@ -32,7 +32,8 @@ GetFirstIP(){
 StartConsulAsServer(){
 	GetFirstIP
 	[ ! -f ${DATADIR} ] && mkdir -p ${DATADIR}
-	SERVER="-server -bootstrap "
+	SERVER="-server"
+	[ ! -n "${MASTERIP}" ] && SERVER="${SERVER} -bootstrap "
 	CMD="/apps/consul agent ${JOIN} ${ADVERTISEIP} ${NAME} ${SERVER} ${DATACENTER}\
 	-data-dir=${DATADIR} ${CLIENTIP} ${DNSSERVER}"
 
