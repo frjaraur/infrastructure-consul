@@ -30,6 +30,7 @@ then
 		do
 			TMPJOIN="-retry-join ${MASTERIP} ${TMPJOIN}"
 		done
+			JOIN=${TMPJOIN}
 	else
 		JOIN="-retry-join ${MASTERIP}"
 	fi
@@ -54,9 +55,23 @@ StartConsulAsServer(){
 
 }
 
+StartConsulAsAgent(){
+	GetFirstIP
+	[ ! -f ${DATADIR} ] && mkdir -p ${DATADIR}
+
+	CMD="/apps/consul agent ${JOIN} ${ADVERTISEIP} ${NAME} ${DATACENTER}\
+	-data-dir=${DATADIR} ${CLIENTIP} ${DNSSERVER}"
+
+	echo "CMD: ${CMD}"
+	${CMD}
+
+}
+
+
 case $ACTION in
 	start|START)
-		[ "$SERVER" = "true" ] && StartConsulAsServer
+		[ "$SERVER" = "true" ] && StartConsulAsServer && exit 0
+
 	;;
 
 	*)
