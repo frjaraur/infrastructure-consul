@@ -11,15 +11,17 @@ SERVER="${SERVER:=false}"
 CLIENTIP="${CLIENTIP:=0.0.0.0}"
 
 
-CLIENTIP="-client ${CLIENTIP}" 
+CLIENTIP="-client ${CLIENTIP}"
 
-[ -n "${ADVERTISEIP}" ] && ADVERTISEIP="-advertise ${ADVERTISEIP}" 
+[ -n "${ADVERTISEIP}" ] && ADVERTISEIP="-advertise ${ADVERTISEIP}"
 
 [ -n "${DATACENTER}" ] && DATACENTER="-dc ${DATACENTER}"
 
 [ -n "${NAME}" ] && NAME="-node ${NAME}"
 
 [ -n "${DNSSERVER}" ] && DNSSERVER="-recursor=${DNSSERVER}"
+
+[ -n "${MASTERIP}" ] && JOIN="-retry-join ${MASTERIP}"
 
 
 GetFirstIP(){
@@ -31,7 +33,7 @@ StartConsulAsServer(){
 	GetFirstIP
 	[ ! -f ${DATADIR} ] && mkdir -p ${DATADIR}
 	SERVER="-server -bootstrap "
-	CMD="/apps/consul agent ${ADVERTISEIP} ${NAME} ${SERVER} ${DATACENTER}\
+	CMD="/apps/consul agent ${JOIN} ${ADVERTISEIP} ${NAME} ${SERVER} ${DATACENTER}\
 	-data-dir=${DATADIR} ${CLIENTIP} ${DNSSERVER}"
 
 
